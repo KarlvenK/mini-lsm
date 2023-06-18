@@ -53,6 +53,8 @@ impl BlockBuilder {
     }
 
     fn current_size(&self) -> usize {
-        self.offset.len() * U16_SIZE + self.data.len()
+        // the separate U16_SIZE is for the footer of block which stands for the number of elements
+        // in the block.
+        self.offset.len() * U16_SIZE + self.data.len() + U16_SIZE
     }
 }
