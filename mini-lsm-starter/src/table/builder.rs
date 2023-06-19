@@ -4,6 +4,7 @@
 use std::path::Path;
 use std::sync::Arc;
 
+use crate::block::BlockBuilder;
 use anyhow::Result;
 
 use super::{BlockMeta, SsTable};
@@ -12,13 +13,22 @@ use crate::lsm_storage::BlockCache;
 /// Builds an SSTable from key-value pairs.
 pub struct SsTableBuilder {
     pub(super) meta: Vec<BlockMeta>,
-    // Add other fields you need.
+    first_key: Vec<u8>,
+    builder: BlockBuilder,
+    data: Vec<u8>,
+    block_size: usize,
 }
 
 impl SsTableBuilder {
     /// Create a builder based on target block size.
     pub fn new(block_size: usize) -> Self {
-        unimplemented!()
+        Self {
+            data: Vec::new(),
+            meta: Vec::new(),
+            first_key: Vec::new(),
+            block_size,
+            builder: BlockBuilder::new(block_size),
+        }
     }
 
     /// Adds a key-value pair to SSTable
